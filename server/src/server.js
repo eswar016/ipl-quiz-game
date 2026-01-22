@@ -7,12 +7,6 @@ initSocket(server);
 
 const PORT = 4000;
 
-const { hasPlayedForBothTeams } = require("./game/validator");
-
 server.listen(PORT, () => {
-    console.log("Test (KKR vs RCB, Chris Gayle):", hasPlayedForBothTeams("KKR", "RCB", "Chris Gayle"));
-    
-    console.log("Test (KKR vs RCB, MS Dhoni):", hasPlayedForBothTeams("KKR", "RCB", "MS Dhoni"));
-    
-    console.log("Server running on http://localhost:" + PORT);
+  console.log("Server running on http://localhost:" + PORT);
 });
