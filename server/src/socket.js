@@ -666,7 +666,7 @@ function initSocket(server) {
 
     socket.on("submit_answer", (payload) => {
       const roomId = extractRoomId(payload);
-      const playerName = normalizePlayerName(payload?.playerName);
+      let playerName = normalizePlayerName(payload?.playerName);
 
       if (!roomId || !playerName) return;
       if (!canSubmitAnswer(roomId)) return;
@@ -674,18 +674,20 @@ function initSocket(server) {
       const teams = getTeams(roomId);
       if (!teams) return;
 
+      const result = validateAnswer({
+        teamA: teams.teamA,
+        teamB: teams.teamB,
+        playerName
+      });
+
+      playerName = result.playerName;
+
       const senderName = getPlayerName(roomId, socket.id);
       io.to(roomId).emit("answer_submitted", {
         senderId: socket.id,
         senderName,
         playerName,
         at: Date.now()
-      });
-
-      const result = validateAnswer({
-        teamA: teams.teamA,
-        teamB: teams.teamB,
-        playerName
       });
 
       const alreadyUsed = isAnswerUsedForMatchup(roomId, teams.teamA, teams.teamB, playerName);
