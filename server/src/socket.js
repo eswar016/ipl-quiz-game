@@ -34,7 +34,8 @@ const {
   getReadyPlayerIds,
   getRematchReadyPlayerIds,
   getRoomState,
-  removePlayer
+  removePlayer,
+  getAllUsedAnswers
 } = require("./game/roomManager");
 const { validateAnswer } = require("./game/gameLogic");
 
@@ -674,10 +675,13 @@ function initSocket(server) {
       const teams = getTeams(roomId);
       if (!teams) return;
 
+      const allUsed = getAllUsedAnswers(roomId);
+
       const result = validateAnswer({
         teamA: teams.teamA,
         teamB: teams.teamB,
-        playerName
+        playerName,
+        excludedPlayers: allUsed
       });
 
       playerName = result.playerName;

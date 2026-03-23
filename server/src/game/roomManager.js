@@ -248,6 +248,23 @@ function markAnswerUsedForMatchup(roomId, teamA, teamB, playerName) {
   room.usedAnswersByMatchup[matchupKey].add(answerKey);
   return true;
 }
+
+function getAllUsedAnswers(roomId) {
+  const room = rooms.get(roomId);
+  if (!room || !room.usedAnswersByMatchup) return [];
+
+  const allUsed = new Set();
+  for (const matchupKey in room.usedAnswersByMatchup) {
+    const matchupSet = room.usedAnswersByMatchup[matchupKey];
+    if (matchupSet instanceof Set) {
+      for (const answer of matchupSet) {
+        allUsed.add(answer);
+      }
+    }
+  }
+  return Array.from(allUsed);
+}
+
 function canSubmitAnswer(roomId) {
   const room = rooms.get(roomId);
   return !!room && room.phase === "guessing" && !room.answered;
@@ -614,7 +631,8 @@ module.exports = {
   getReadyPlayerIds,
   getRematchReadyPlayerIds,
   getRoomState,
-  removePlayer
+  removePlayer,
+  getAllUsedAnswers
 };
 
 

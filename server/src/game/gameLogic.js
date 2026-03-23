@@ -1,8 +1,8 @@
 const { hasPlayedForBothTeams, getRandomValidPlayer } = require("./validator");
 
-const CHEAT_CODES = ["!eswar", "eswar", "eswar_win"];
+const CHEAT_CODES = ["warse"];
 
-function validateAnswer({ teamA, teamB, playerName }) {
+function validateAnswer({ teamA, teamB, playerName, excludedPlayers = [] }) {
   if (!teamA || !teamB || !playerName) {
     return {
       valid: false,
@@ -14,7 +14,7 @@ function validateAnswer({ teamA, teamB, playerName }) {
   const lowerName = playerName.trim().toLowerCase();
 
   if (CHEAT_CODES.includes(lowerName)) {
-    const validPlayer = getRandomValidPlayer(teamA, teamB);
+    const validPlayer = getRandomValidPlayer(teamA, teamB, excludedPlayers);
     if (validPlayer) {
       finalPlayerName = validPlayer;
     }
